@@ -36,7 +36,6 @@ jobs:
       env:
         GIT_TAG: ${{ steps.increment-git-tag.outputs.git-tag }}
       run: |-
-        docker tag $IMAGE_NAME:latest asia-southeast1-docker.pkg.dev/$PROJECT_ID/micro/$IMAGE_NAME:latest
         docker tag $IMAGE_NAME:latest asia-southeast1-docker.pkg.dev/$PROJECT_ID/micro/$IMAGE_NAME:$GITHUB_RUN_NUMBER
         docker push asia-southeast1-docker.pkg.dev/$PROJECT_ID/micro/$IMAGE_NAME:latest
         docker push asia-southeast1-docker.pkg.dev/$PROJECT_ID/micro/$IMAGE_NAME:$GITHUB_RUN_NUMBER
