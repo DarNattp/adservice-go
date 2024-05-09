@@ -10,6 +10,8 @@ jobs:
     env:
       IMAGE_NAME: adservice
       PROJECT_ID: devops-00000
+      ARTIFACT_REG: asia-southeast1-docker.pkg.dev
+      IMAGE_REPO: micro
     steps:
     - name: Checkout
       uses: actions/checkout@v2
@@ -30,13 +32,13 @@ jobs:
 
     - name: Configure Docker Client
       run: |-
-        gcloud auth configure-docker asia-southeast1-docker.pkg.dev --quiet
+        gcloud auth configure-docker ${ARTIFACT_REG} --quiet
 
     - name: Push Docker Image to Artifact Registry
       env:
         GIT_TAG: ${{ steps.increment-git-tag.outputs.git-tag }}
       run: |-
-        docker tag $IMAGE_NAME:latest asia-southeast1-docker.pkg.dev/$PROJECT_ID/micro/$IMAGE_NAME:latest
-        docker tag $IMAGE_NAME:latest asia-southeast1-docker.pkg.dev/$PROJECT_ID/micro/$IMAGE_NAME:$GITHUB_RUN_NUMBER
-        docker push asia-southeast1-docker.pkg.dev/$PROJECT_ID/micro/$IMAGE_NAME:latest
-        docker push asia-southeast1-docker.pkg.dev/$PROJECT_ID/micro/$IMAGE_NAME:$GITHUB_RUN_NUMBER
+        docker tag $IMAGE_NAME:latest ${ARTIFACT_REG}/${PROJECT_ID}/${IMAGE_REPO}/$IMAGE_NAME:latest
+        docker tag $IMAGE_NAME:latest ${ARTIFACT_REG}/${PROJECT_ID}/${IMAGE_REPO}/$IMAGE_NAME:$GITHUB_RUN_NUMBER
+        docker push ${ARTIFACT_REG}/${PROJECT_ID}/${IMAGE_REPO}/$IMAGE_NAME:latest
+        docker push ${ARTIFACT_REG}/${PROJECT_ID}/${IMAGE_REPO}/$IMAGE_NAME:$GITHUB_RUN_NUMBER
